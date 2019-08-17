@@ -8,6 +8,8 @@ export default function(state = {}, action) {
       return { ...state, new_user: action.payload };
     case "LOAD":
       return { ...state, data: action.payload.data };
+    case "UPDATE_USER":
+      return { ...state, updated_user: action.payload };
     case "USER_DEL":
       return { ...state, del_user: action.payload, status: action.status };
     default:

@@ -5,6 +5,7 @@ import { getUsersList, deleteUser } from "../actions";
 
 class ListUsers extends Component {
   state = {
+    loading: true,
     flag: false
   };
   componentWillMount() {
@@ -45,6 +46,9 @@ class ListUsers extends Component {
                 </button>{" "}
                 <Link to={`/add/user/${user.id}`} className="btn btn-primary">
                   Edit
+                </Link>{" "}
+                <Link to={`/user/${user.id}`} className="btn btn-primary">
+                  View
                 </Link>
               </td>
             </tr>
@@ -53,7 +57,14 @@ class ListUsers extends Component {
     </tbody>
   );
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ loading: false });
+  }
+
   render() {
+    if (this.state.loading) {
+      return <div className="loader">Loading...</div>;
+    }
     let users = this.props.users.users;
     return users && users.data.length > 1 ? (
       <div className="container">

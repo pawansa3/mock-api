@@ -1,8 +1,10 @@
 import axios from "axios";
 
+const baseUrl = "https://reqres.in";
+
 export function getUsersList(page_no = 1) {
   const request = axios
-    .get(`https://reqres.in/api/users?page=${page_no}`)
+    .get(`${baseUrl}/api/users?page=${page_no}`)
     .then(res => res.data)
     .catch(err => console.log(err));
 
@@ -14,9 +16,9 @@ export function getUsersList(page_no = 1) {
 
 export function getUser(id) {
   const request = axios
-    .get(`https://reqres.in/api/users/${id}`)
+    .get(`${baseUrl}/api/users/${id}`)
     .then(res => res.data)
-    .catch(err => null);
+    .catch(err => console.log(err));
 
   return {
     type: "GET_USER",
@@ -26,7 +28,7 @@ export function getUser(id) {
 
 export function loadUser(id) {
   const request = axios
-    .get(`https://reqres.in/api/users/${id}`)
+    .get(`${baseUrl}/api/users/${id}`)
     .then(res => res.data)
     .catch(err => console.log(err));
 
@@ -36,9 +38,9 @@ export function loadUser(id) {
   };
 }
 
-export async function deleteUser(id) {
-  const request = await axios
-    .delete(`https://reqres.in/api/users/${id}`)
+export function deleteUser(id) {
+  const request = axios
+    .delete(`${baseUrl}/api/users/${id}`)
     .then(res => res.data)
     .catch(err => console.log(err));
 
@@ -49,13 +51,13 @@ export async function deleteUser(id) {
   };
 }
 
-export async function createUser(formdata) {
+export function createUser(formdata) {
   const fd = formdata ? { name: formdata.name, job: formdata.job } : "";
 
-  const request = await axios
-    .post("https://reqres.in/api/user", fd)
+  const request = axios
+    .post(`${baseUrl}/api/user`, fd)
     .then(res => res.data)
-    .catch(err => console.log(err.message));
+    .catch(err => console.log(err));
 
   return {
     type: "CREATE_USER",
@@ -63,13 +65,16 @@ export async function createUser(formdata) {
   };
 }
 
-export async function updateUser(formdata, id) {
+export function updateUser(formdata, id) {
   const fd = formdata ? { name: formdata.name, job: formdata.job } : "";
 
-  const request = await axios
-    .put("https://reqres.in/api/user/${id}", fd)
+  const request = axios
+    .put(`${baseUrl}/api/user/${id}`, fd)
     .then(res => res.data)
-    .catch(err => console.log(err.message));
+    .catch(err => console.log(err));
 
-  return;
+  return {
+    type: "UPDATE_USER",
+    payload: request
+  };
 }

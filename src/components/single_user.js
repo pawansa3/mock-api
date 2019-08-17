@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import { getUser } from "../actions";
 
 class SingleUser extends Component {
+  state = {
+    loading: true
+  };
   componentWillMount() {
     this.props.dispatch(getUser(this.props.match.params.id));
   }
@@ -20,8 +23,14 @@ class SingleUser extends Component {
       "User not found!"
     );
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ loading: false });
+  }
+
   render() {
-    console.log(this.props);
+    if (this.state.loading) {
+      return <div className="loader">Loading...</div>;
+    }
     let user = this.props.user.user;
     return <div>{this.renderUser(user)}</div>;
   }
