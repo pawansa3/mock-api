@@ -74,7 +74,6 @@ class ListUsers extends Component {
     if (this.state.loading) {
       return <div className="loader">Loading...</div>;
     }
-    console.log(this.props);
     let users = this.props.users.users;
     return users && users.data.length > 1 ? (
       <div className="container">
