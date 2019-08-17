@@ -17,6 +17,7 @@ const Routes = () => {
         <Route exact path="/user/:id" component={SingleUser} />
         <Route exact path="/add/user" component={CreateUser} />
         <Route exact path="/add/user/:id" component={UpdateUser} />
+        <Route render={() => <div>Page Not Found !</div>} />
       </Switch>
     </div>
   );

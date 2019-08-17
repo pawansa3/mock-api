@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getUsersList, deleteUser } from "../actions";
+import Pagination from "react-js-pagination";
 
 class ListUsers extends Component {
   state = {
     loading: true,
-    flag: false
+    flag: false,
+    activePage: 1
   };
   componentWillMount() {
-    this.props.dispatch(getUsersList(this.props.match.params.pn));
+    this.props.dispatch(getUsersList(this.state.activePage));
   }
 
   deleteThis = (e, id) => {
@@ -20,7 +22,7 @@ class ListUsers extends Component {
   redirectUser = () => {
     setTimeout(() => {
       this.setState({ flag: false });
-      this.props.history.push("/listusers/1");
+      this.props.history.push(`/listusers/${this.state.activePage}`);
     }, 1000);
   };
 
@@ -61,10 +63,18 @@ class ListUsers extends Component {
     this.setState({ loading: false });
   }
 
+  handlePageChange = pageNumber => {
+    console.log(`active page is ${pageNumber}`);
+    this.setState({ activePage: pageNumber });
+    this.props.history.push(`/listusers/${pageNumber}`);
+    this.props.dispatch(getUsersList(pageNumber));
+  };
+
   render() {
     if (this.state.loading) {
       return <div className="loader">Loading...</div>;
     }
+    console.log(this.props);
     let users = this.props.users.users;
     return users && users.data.length > 1 ? (
       <div className="container">
@@ -89,6 +99,13 @@ class ListUsers extends Component {
           </thead>
           {this.renderUsers(users)}
         </table>
+        <Pagination
+          activePage={this.state.activePage}
+          itemsCountPerPage={this.props.users.users.per_page}
+          totalItemsCount={this.props.users.users.total}
+          pageRangeDisplayed={4}
+          onChange={this.handlePageChange}
+        />
       </div>
     ) : (
       "No users found"
